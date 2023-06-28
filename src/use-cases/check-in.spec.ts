@@ -14,13 +14,13 @@ describe('Check-In Use Case', () => {
     inMemoryGymRepository = new InMemoryGymRepository()
     checkInUseCase = new CheckInUseCase(inMemoryRepository, inMemoryGymRepository)
 
-    inMemoryGymRepository.items.push({
+    inMemoryGymRepository.create({
       name: "Javascript GYM",
       id: "gym-1",
-      description: "",
-      latitude: new Decimal(0),
-      longitude: new Decimal(0),
-      phone: ""
+      description: "Best GYM",
+      latitude: new Decimal(-22.5688278),
+      longitude: new Decimal(-48.6357383),
+      phone: "997452321"
     })
 
     vi.useFakeTimers()
@@ -32,10 +32,10 @@ describe('Check-In Use Case', () => {
 
   it('should be able to create a check-in', async () => {
     const { checkIn } = await checkInUseCase.execute({
-       gymId: "gym-1",
-       userId: "user-1",
-       latitute: -22.5688278,
-       longitude: -48.6357383
+       gymId: 'gym-1',
+       userId: 'user-1',
+       userLatitute: -22.5688278,
+       userLongitude: -48.6357383
     })
 
     expect(checkIn.id).toEqual(expect.any(String))
@@ -48,16 +48,16 @@ describe('Check-In Use Case', () => {
     await checkInUseCase.execute({
       gymId: 'gym-1',
       userId: 'user-1',
-      latitute: -22.5688278,
-      longitude: -48.6357383
+      userLatitute: -22.5688278,
+      userLongitude: -48.6357383
     })
 
     await expect(() => 
       checkInUseCase.execute({
         gymId: 'gym-1',
         userId: 'user-1',
-        latitute: -22.5688278,
-        longitude: -48.6357383
+        userLatitute: -22.5688278,
+        userLongitude: -48.6357383
       }),
     ).rejects.toBeInstanceOf(Error)
   })
@@ -68,18 +68,38 @@ describe('Check-In Use Case', () => {
     await checkInUseCase.execute({
       gymId: 'gym-1',
       userId: 'user-1',
-      latitute: -22.5688278,
-      longitude: -48.6357383
+      userLatitute: -22.5688278,
+      userLongitude: -48.6357383
     })
 
     vi.setSystemTime(new Date(2023, 0, 21, 5, 0, 0))
     const { checkIn } = await checkInUseCase.execute({
       gymId: 'gym-1',
       userId: 'user-1',
-      latitute: -22.5688278,
-      longitude: -48.6357383
+      userLatitute: -22.5688278,
+      userLongitude: -48.6357383
     })
 
     expect(checkIn.id).toEqual(expect.any(String))
+  })
+
+  it('should not be able to check-in on a distant gym', async () => {
+    inMemoryGymRepository.create({
+      name: "Javascript GYM",
+      id: "gym-2",
+      description: "",
+      latitude: new Decimal(-21.0170601),
+      longitude: new Decimal(-45.0309648),
+      phone: ""
+    })
+
+    await expect(() => 
+     checkInUseCase.execute({
+      gymId: 'gym-2',
+      userId: 'user-1',
+      userLatitute: -22.5688278,
+      userLongitude: -48.6357383
+    })
+   ).rejects.toBeInstanceOf(Error)
   })
 })
