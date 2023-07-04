@@ -6,12 +6,12 @@ import { Decimal } from "@prisma/client/runtime/library";
 export class InMemoryGymRepository implements GymRepository {
   public items: Gym[] = []
 
-  async create(data: Prisma.GymUncheckedCreateInput) {
+  async create(data: Prisma.GymCreateInput) {
     const gym = {
-      id: data.id ? data.id : randomUUID(),
+      id: data.id ?? randomUUID(),
       name: data.name,
-      description: data.description ? data.description : null,
-      phone: data.phone ? data.phone : null,
+      description: data.description ?? null,
+      phone: data.phone ?? null,
       latitude: new Decimal(data.latitude.toString()),
       longitude: new Decimal(data.longitude.toString()),
     }
