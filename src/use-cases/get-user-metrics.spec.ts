@@ -3,21 +3,21 @@ import { beforeEach, describe, expect, it } from "vitest";
 import { GetUserMetricsUseCase } from "./get-user-metrics";
 
 describe("Get User Metrics Use Case", () => {
-  let inMemoryRepository: InMemoryCheckInRepository;
+  let checkinRepository: InMemoryCheckInRepository;
   let getUserMetricsUseCase: GetUserMetricsUseCase;
 
   beforeEach(async () => {
-    inMemoryRepository = new InMemoryCheckInRepository()
-    getUserMetricsUseCase = new GetUserMetricsUseCase(inMemoryRepository)
+    checkinRepository = new InMemoryCheckInRepository()
+    getUserMetricsUseCase = new GetUserMetricsUseCase(checkinRepository)
   })
 
   it("should be able to get user metrics", async () => {
-    await inMemoryRepository.create({
+    await checkinRepository.create({
       gym_id: "gym-01",
       user_id: "user-01"
     })
 
-    await inMemoryRepository.create({
+    await checkinRepository.create({
       gym_id: "gym-02",
       user_id: "user-01"
     })

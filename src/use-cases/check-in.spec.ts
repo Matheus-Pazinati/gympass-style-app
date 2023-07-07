@@ -5,16 +5,16 @@ import { InMemoryGymRepository } from '@/repositories/in-memory/in-memory-gym-re
 import { MaxDistanceReachedError, MaxNumberOfCheckInsError } from './errors/checkin-errors';
 
 describe('Check-In Use Case', () => {
-  let inMemoryRepository: InMemoryCheckInRepository;
-  let inMemoryGymRepository: InMemoryGymRepository;
+  let checkinRepository: InMemoryCheckInRepository;
+  let gymRepository: InMemoryGymRepository;
   let checkInUseCase: CheckInUseCase;
 
   beforeEach(async () => {
-    inMemoryRepository = new InMemoryCheckInRepository()
-    inMemoryGymRepository = new InMemoryGymRepository()
-    checkInUseCase = new CheckInUseCase(inMemoryRepository, inMemoryGymRepository)
+    checkinRepository = new InMemoryCheckInRepository()
+    gymRepository = new InMemoryGymRepository()
+    checkInUseCase = new CheckInUseCase(checkinRepository, gymRepository)
 
-    await inMemoryGymRepository.create({
+    await gymRepository.create({
       name: "Javascript GYM",
       id: "gym-1",
       description: "Best GYM",
@@ -84,7 +84,7 @@ describe('Check-In Use Case', () => {
   })
 
   it('should not be able to check-in on a distant gym', async () => {
-    inMemoryGymRepository.create({
+    gymRepository.create({
       name: "Javascript GYM",
       id: "gym-2",
       description: "",

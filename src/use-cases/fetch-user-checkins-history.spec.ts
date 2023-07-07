@@ -1,24 +1,23 @@
-import { CheckInRepository } from "@/repositories/checkin-repository";
 import { beforeEach, describe, expect, it } from "vitest";
 import { FetchUserCheckInsHistoryUseCase } from "./fetch-user-checkins-history";
 import { InMemoryCheckInRepository } from "@/repositories/in-memory/in-memory-check-ins-repository";
 
 describe("Fetch User Check Ins History Use Case", () => {
-  let inMemoryRepository: CheckInRepository
+  let checkinRepository: InMemoryCheckInRepository
   let FetchUserCheckInHistoryUseCase: FetchUserCheckInsHistoryUseCase
 
   beforeEach(async () => {
-    inMemoryRepository = new InMemoryCheckInRepository()
-    FetchUserCheckInHistoryUseCase = new FetchUserCheckInsHistoryUseCase(inMemoryRepository)
+    checkinRepository = new InMemoryCheckInRepository()
+    FetchUserCheckInHistoryUseCase = new FetchUserCheckInsHistoryUseCase(checkinRepository)
   })
 
   it("should be able to fetch user check ins history", async () => {
-    await inMemoryRepository.create({
+    await checkinRepository.create({
       gym_id: "gym-01",
       user_id: "user-01"
     })
 
-    await inMemoryRepository.create({
+    await checkinRepository.create({
       gym_id: "gym-02",
       user_id: "user-01"
     })
@@ -41,7 +40,7 @@ describe("Fetch User Check Ins History Use Case", () => {
 
   it("should be able to fetch paginated user check ins history", async () => {
     for (let i = 1; i <= 22; i++) {
-      await inMemoryRepository.create({
+      await checkinRepository.create({
         gym_id: `gym-${i}`,
         user_id: "user-01"
       })

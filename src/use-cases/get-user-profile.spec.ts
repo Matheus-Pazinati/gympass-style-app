@@ -5,16 +5,16 @@ import { GetUserProfileUseCase } from './get-user-profile'
 import { ResourceNotFoundError } from './errors/resource-not-found-error'
 
 describe('Get User Profile Use Case', () => {
-  let inMemoryRepository: InMemoryUserRepository;
+  let userRepository: InMemoryUserRepository;
   let getUserProfileUseCase: GetUserProfileUseCase;
 
   beforeEach(() => {
-    inMemoryRepository = new InMemoryUserRepository()
-    getUserProfileUseCase= new GetUserProfileUseCase(inMemoryRepository)
+    userRepository = new InMemoryUserRepository()
+    getUserProfileUseCase= new GetUserProfileUseCase(userRepository)
   })
 
   it('should be able to get user profile', async () => {
-    const newUser = inMemoryRepository.create({
+    const newUser = userRepository.create({
       name: "John Doe",
       email: "johndoe@email.com",
       password_hash: await hash("123456", 6)

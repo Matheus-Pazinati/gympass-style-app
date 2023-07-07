@@ -3,12 +3,12 @@ import { describe, it, expect, beforeEach } from "vitest";
 import { CreateGymUseCase } from "./create-gym";
 
 describe("Create Gym Use Case", () => {
-  let inMemoryRepository: InMemoryGymRepository;
+  let gymRepository: InMemoryGymRepository;
   let gymUseCase: CreateGymUseCase;
 
   beforeEach(async () => {
-    inMemoryRepository = new InMemoryGymRepository()
-    gymUseCase = new CreateGymUseCase(inMemoryRepository)
+    gymRepository = new InMemoryGymRepository()
+    gymUseCase = new CreateGymUseCase(gymRepository)
   })
 
   it("should be able to create a gym", async () => {
