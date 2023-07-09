@@ -24,6 +24,16 @@ export class InMemoryCheckInRepository implements CheckInRepository {
     return checkInOnSameDay
   }
 
+  async findById(checkInId: string) {
+    const checkIn = this.items.find((item) => item.id === checkInId)
+
+    if (checkIn === undefined) {
+      return null
+    }
+
+    return checkIn
+  }
+
   async countByUserId(userId: string) {
     return this.items.filter((item) => item.user_id === userId).length
   }
@@ -43,6 +53,18 @@ export class InMemoryCheckInRepository implements CheckInRepository {
     }
 
     this.items.push(checkIn)
+
+    return checkIn
+  }
+
+  async save(checkIn: CheckIn) {
+    const updatedCheckinIndex = this.items.findIndex((item) => item.id === checkIn.id)
+
+    const checkInExists = updatedCheckinIndex >= 0
+
+    if (checkInExists) {
+      this.items[updatedCheckinIndex] = checkIn
+    }
 
     return checkIn
   }
