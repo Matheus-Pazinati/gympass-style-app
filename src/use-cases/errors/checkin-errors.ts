@@ -9,3 +9,9 @@ export class MaxDistanceReachedError extends Error {
     super("Max distance reached.")
   }
 }
+
+export class MaxMinutesTimedOutError extends Error {
+  constructor() {
+    super("Max minutes timed out.")
+  }
+}
