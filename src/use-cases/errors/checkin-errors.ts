@@ -15,3 +15,9 @@ export class MaxMinutesTimedOutError extends Error {
     super("Max minutes timed out.")
   }
 }
+
+export class CheckInAlreadyValidatedError extends Error {
+  constructor() {
+    super("Check-in already validated.")
+  }
+}

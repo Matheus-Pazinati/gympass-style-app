@@ -2,7 +2,7 @@ import { CheckInRepository } from "@/repositories/checkin-repository";
 import { CheckIn } from "@prisma/client";
 import { ResourceNotFoundError } from "./errors/resource-not-found-error";
 import dayjs from "dayjs";
-import { MaxMinutesTimedOutError } from "./errors/checkin-errors";
+import { CheckInAlreadyValidatedError, MaxMinutesTimedOutError } from "./errors/checkin-errors";
 
 interface ValidateCheckInUseCaseRequest {
   checkInId: string
@@ -22,6 +22,12 @@ export class ValidateCheckInUseCase {
 
     if (!checkIn) {
       throw new ResourceNotFoundError()
+    }
+
+    const isCheckInAlreadyValidated = checkIn.validated_at !== null
+
+    if (isCheckInAlreadyValidated) {
+      throw new CheckInAlreadyValidatedError()
     }
 
     const checkInValidateDate = dayjs(new Date)
