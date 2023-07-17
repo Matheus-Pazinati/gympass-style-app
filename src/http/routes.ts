@@ -9,5 +9,5 @@ export async function appRoutes(app: FastifyInstance) {
   app.post("/sessions", authentication)
 
   // authenticated routes
-  app.get("/me", { preHandler: validateJWTSignature } ,profile)
+  app.get("/me", { preHandler: validateJWTSignature }, profile)
 }
