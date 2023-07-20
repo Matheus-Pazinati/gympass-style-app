@@ -2,7 +2,7 @@ import { afterAll, beforeAll, describe, it } from "vitest";
 import { app } from '../../app'
 import request from 'supertest'
 
-describe("Register E2E", async () => {
+describe("Register E2E Test", async () => {
   beforeAll(async () => {
     await app.ready()
   })
@@ -10,7 +10,6 @@ describe("Register E2E", async () => {
   afterAll(async () => {
     await app.close()
   })
-
 
   it("should be able to register a user", async () => {
     await request(app.server).post('/users')
