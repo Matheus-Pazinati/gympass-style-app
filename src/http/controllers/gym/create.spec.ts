@@ -1,9 +1,9 @@
+import { app } from "@/app";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
-import { app } from '@/app'
 import request from 'supertest'
 import { createAndAuthenticateUser } from "@/utils/test/create-authenticate-user";
 
-describe("Profile E2E Test", async () => {
+describe("Create a Gym E2E Test", () => {
   beforeAll(async () => {
     await app.ready()
   })
@@ -12,17 +12,19 @@ describe("Profile E2E Test", async () => {
     await app.close()
   })
 
-  it("should be able to get user profile", async () => {
+  it("should be able to create a gym", async () => {
 
     const { token } = await createAndAuthenticateUser(app)
 
-    const response = await request(app.server).get('/me')
+    await request(app.server).post("/gyms")
     .set('Authorization', `Bearer ${token}`)
-    .send()
-
-    expect(response.statusCode).toEqual(200)
-    expect(response.body).toEqual(expect.objectContaining({
-      name: "John Doe"
-    }))
+    .send({
+      name: "Javascript GYM",
+      description: "The best GYM",
+      phone: "123456789",
+      latitude: -22.5688278,
+      longitude: -48.6357383,
+    })
+    .expect(201)
   })
 })
