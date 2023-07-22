@@ -1,5 +1,5 @@
 import { afterAll, beforeAll, describe, it } from "vitest";
-import { app } from '../../app'
+import { app } from '@/app'
 import request from 'supertest'
 
 describe("Register E2E Test", async () => {

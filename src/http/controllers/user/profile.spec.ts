@@ -1,8 +1,8 @@
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import { app } from '@/app'
 import request from 'supertest'
-import { app } from '../../app'
 
-describe("Authentication E2E Test", async () => {
+describe("Profile E2E Test", async () => {
   beforeAll(async () => {
     await app.ready()
   })
@@ -11,7 +11,8 @@ describe("Authentication E2E Test", async () => {
     await app.close()
   })
 
-  it("should be able to authenticate a user", async () => {
+  it("should be able to get user profile", async () => {
+
     await request(app.server).post('/users')
     .send({
       name: "John Doe",
@@ -20,15 +21,21 @@ describe("Authentication E2E Test", async () => {
       passwordConfirm: "123456"
     })
 
-    const response = await request(app.server).post('/sessions')
+    const authenticationResponse = await request(app.server).post('/sessions')
     .send({
       email: "johndoe@example.com",
       password: "123456"
     })
 
+    const { token } = authenticationResponse.body
+
+    const response = await request(app.server).get('/me')
+    .set('Authorization', `Bearer ${token}`)
+    .send()
+
     expect(response.statusCode).toEqual(200)
     expect(response.body).toEqual(expect.objectContaining({
-      token: expect.any(String)
+      name: "John Doe"
     }))
   })
 })
