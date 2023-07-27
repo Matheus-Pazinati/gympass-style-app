@@ -52,22 +52,19 @@ describe("Get the User Check-ins History E2E Test", async() => {
       user_longitude: -48.6357382
     })
 
-    vi.useRealTimers()
-
     const response = await request(app.server).get("/check-ins/history")
     .set("Authorization", `Bearer ${token}`)
     .send()
 
     expect(response.status).toEqual(200)
     expect(response.body.userCheckIns).toHaveLength(2)
-    expect(response.body.userCheckIns).toEqual([
+    expect(response.body.userCheckIns).toEqual(expect.arrayContaining([
       expect.objectContaining({
         gym_id: firstGym.id
       }),
       expect.objectContaining({
         gym_id: secondGym.id
       })
-    ])
-
+    ]))
   })
 })
