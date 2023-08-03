@@ -2,6 +2,7 @@ import { FastifyReply, FastifyRequest } from "fastify";
 
 export async function refresh(request: FastifyRequest, reply: FastifyReply) {
   await request.jwtVerify({ onlyCookie: true })
+  console.log(request.cookies.refreshToken)
 
   const userRole = request.user.role
 
@@ -9,7 +10,8 @@ export async function refresh(request: FastifyRequest, reply: FastifyReply) {
     role: userRole
   }, {
     sign: {
-      sub: request.user.sub
+      sub: request.user.sub,
+      expiresIn: '1h'
     }
   })
 
